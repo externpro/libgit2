@@ -32,7 +32,12 @@ INCLUDE(GNUInstallDirs)
 INCLUDE(IdeSplitSources)
 INCLUDE(FeatureSummary)
 INCLUDE(EnableWarnings)
-INCLUDE(flags OPTIONAL)
+include(flags OPTIONAL)
+if(DEFINED XP_NAMESPACE)
+  set(XP_MODULE_PATH ${CMAKE_MODULE_PATH})
+  set(XP_OPT_INSTALL EXCLUDE_FROM_ALL)
+  set(nameSpace NAMESPACE ${XP_NAMESPACE}::)
+endif()
 
 # Build options
 #
@@ -59,15 +64,6 @@ OPTION(USE_BUNDLED_ZLIB    		"Use the bundled version of zlib. Can be set to one
 OPTION(DEPRECATE_HARD			"Do not include deprecated functions in the library"	OFF)
    SET(REGEX_BACKEND			"" CACHE STRING "Regular expression implementation. One of regcomp_l, pcre2, pcre, regcomp, or builtin.")
 
-OPTION(OPENSSL_MODULE_PATH		"Find OpenSSL in CMAKE_MODULE_PATH"			OFF)
-OPTION(ZLIB_MODULE_PATH			"Find zlib in CMAKE_MODULE_PATH"			OFF)
-OPTION(LIBSSH2_MODULE_PATH		"Find libssh2 in CMAKE_MODULE_PATH"			OFF)
-OPTION(INSTALL_LIBGIT2_CONFIG		"Install libgit2 config (pkg-config libgit2.pc)"	ON)
-MARK_AS_ADVANCED(OPENSSL_MODULE_PATH)
-MARK_AS_ADVANCED(ZLIB_MODULE_PATH)
-MARK_AS_ADVANCED(LIBSSH2_MODULE_PATH)
-MARK_AS_ADVANCED(INSTALL_LIBGIT2_CONFIG)
-
 IF (UNIX)
 	IF (NOT USE_HTTPS)
 	    OPTION(USE_NTLMCLIENT		"Enable NTLM support on Unix."				OFF )
@@ -90,8 +86,8 @@ IF(MSVC)
 	OPTION(STATIC_CRT		"Link the static CRT libraries"		 		 ON)
 
 	# Some MSVC flags are not compatible with what's been set externally
-	OPTION(SKIP_MSVC_FLAGS		"Skip MSVC flags set here"				OFF)
-	MARK_AS_ADVANCED(SKIP_MSVC_FLAGS)
+	OPTION(XP_SKIP_MSVC_FLAGS	"Skip MSVC flags set here"				OFF)
+	MARK_AS_ADVANCED(XP_SKIP_MSVC_FLAGS)
 
 	# If you want to embed a copy of libssh2 into libgit2, pass a
 	# path to libssh2
@@ -116,7 +112,7 @@ ENDIF()
 
 # Platform specific compilation flags
 IF (MSVC)
-	IF (NOT SKIP_MSVC_FLAGS)
+	IF (NOT XP_SKIP_MSVC_FLAGS)
 
 	IF (STDCALL)
 		MESSAGE(FATAL_ERROR "The STDCALL option is no longer supported; libgit2 is now always built as a cdecl library.  If you're using PInvoke, please add the CallingConventions.Cdecl attribute for support.")
@@ -208,7 +204,7 @@ IF (MSVC)
 	SET(CMAKE_SHARED_LINKER_FLAGS_RELWITHDEBINFO "${CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO}")
 	SET(CMAKE_SHARED_LINKER_FLAGS_MINSIZEREL "${CMAKE_EXE_LINKER_FLAGS_MINSIZEREL}")
 
-	ENDIF() # SKIP_MSVC_FLAGS
+	ENDIF() # XP_SKIP_MSVC_FLAGS
 ELSE ()
 	IF (ENABLE_REPRODUCIBLE_BUILDS)
 		SET(CMAKE_C_ARCHIVE_CREATE "<CMAKE_AR> Dqc <TARGET> <LINK_FLAGS> <OBJECTS>")

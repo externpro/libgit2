@@ -72,8 +72,6 @@ function(pkg_build_config)
     endif()
     file(APPEND "${PKGCONFIG_FILE}" "Cflags: -I\${includedir} ${PKGCONFIG_CFLAGS}\n")
 
-    if(INSTALL_LIBGIT2_CONFIG)
     # Install .pc file
-    install(FILES "${PKGCONFIG_FILE}" DESTINATION "${CMAKE_INSTALL_LIBDIR}/pkgconfig")
-    endif()
+    install(FILES "${PKGCONFIG_FILE}" ${XP_OPT_INSTALL} DESTINATION "${CMAKE_INSTALL_LIBDIR}/pkgconfig")
 endfunction()
