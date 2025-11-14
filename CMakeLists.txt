@@ -11,7 +11,7 @@
 # Install:
 # > cmake --build . --target install
 
-CMAKE_MINIMUM_REQUIRED(VERSION 3.5.1)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.5.1...3.31)
 
 set(CMAKE_PROJECT_TOP_LEVEL_INCLUDES .devcontainer/cmake/xproinc.cmake)
 
