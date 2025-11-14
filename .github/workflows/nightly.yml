@@ -1,10 +1,7 @@
 # Nightly build for the main branch across multiple targets.
 name: Nightly Build
 
-on:
-  workflow_dispatch:
-  schedule:
-  - cron: '15 1 * * *'
+on: [workflow_dispatch]
 
 env:
   docker-registry: docker.pkg.github.com

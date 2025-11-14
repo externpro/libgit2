@@ -11,7 +11,9 @@
 # Install:
 # > cmake --build . --target install
 
-CMAKE_MINIMUM_REQUIRED(VERSION 3.5.1)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.5.1...3.31)
+
+set(CMAKE_PROJECT_TOP_LEVEL_INCLUDES .devcontainer/cmake/xproinc.cmake)
 
 project(libgit2 VERSION "1.3.0" LANGUAGES C)
 
@@ -33,12 +35,24 @@ INCLUDE(IdeSplitSources)
 INCLUDE(FeatureSummary)
 INCLUDE(EnableWarnings)
 include(xpflags)
-if(DEFINED XP_NAMESPACE)
-  set(XP_OPT_INSTALL EXCLUDE_FROM_ALL)
-  set(nameSpace NAMESPACE ${XP_NAMESPACE}::)
-endif()
+set(targetsFile ${PROJECT_NAME}-targets)
 if(NOT DEFINED XP_INSTALL_CMAKEDIR)
   set(XP_INSTALL_CMAKEDIR ${CMAKE_INSTALL_DATADIR}/cmake)
+endif()
+if(DEFINED XP_NAMESPACE)
+  set(XP_OPT_INSTALL FALSE)
+  set(nameSpace NAMESPACE ${XP_NAMESPACE}::)
+  set(USE_CMAKE_ICONV ON)
+  string(JOIN "\n" EXT1
+    "if(APPLE)"
+    "  find_package(Iconv REQUIRED)"
+    "endif()"
+    ""
+    )
+  xpPackageDevel(TARGETS_FILE ${targetsFile} DEPS libssh2 LIBRARIES ${XP_NAMESPACE}::git2)
+else()
+  set(XP_OPT_INSTALL TRUE)
+  set(USE_CMAKE_ICONV OFF)
 endif()
 
 # Build options
