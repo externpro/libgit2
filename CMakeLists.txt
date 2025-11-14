@@ -13,6 +13,8 @@
 
 CMAKE_MINIMUM_REQUIRED(VERSION 3.5.1)
 
+set(CMAKE_PROJECT_TOP_LEVEL_INCLUDES .devcontainer/cmake/xproinc.cmake)
+
 project(libgit2 VERSION "1.3.0" LANGUAGES C)
 
 # Add find modules to the path

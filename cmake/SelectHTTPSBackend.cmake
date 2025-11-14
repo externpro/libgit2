@@ -1,11 +1,9 @@
 INCLUDE(SanitizeBool)
 
 # We try to find any packages our backends might use
-if(COMMAND xpFindPkg)
-  xpFindPkg(PKGS openssl)
+FIND_PACKAGE(OpenSSL)
+if(TARGET xpro::crypto AND NOT DEFINED OPENSSL_INCLUDE_DIR)
   get_target_property(OPENSSL_INCLUDE_DIR xpro::crypto INTERFACE_INCLUDE_DIRECTORIES)
-else()
-  FIND_PACKAGE(OpenSSL)
 endif()
 FIND_PACKAGE(mbedTLS)
 IF (CMAKE_SYSTEM_NAME MATCHES "Darwin")
