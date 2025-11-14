@@ -6,3 +6,7 @@
 CMakeSettings.json
 .vs
 .idea
+# externpro
+.env
+_bld*/
+docker-compose.override.yml
