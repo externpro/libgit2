@@ -42,9 +42,17 @@ endif()
 if(DEFINED XP_NAMESPACE)
   set(XP_OPT_INSTALL FALSE)
   set(nameSpace NAMESPACE ${XP_NAMESPACE}::)
+  set(USE_CMAKE_ICONV ON)
+  string(JOIN "\n" EXT1
+    "if(APPLE)"
+    "  find_package(Iconv REQUIRED)"
+    "endif()"
+    ""
+    )
   xpPackageDevel(TARGETS_FILE ${targetsFile} DEPS libssh2 LIBRARIES ${XP_NAMESPACE}::git2)
 else()
   set(XP_OPT_INSTALL TRUE)
+  set(USE_CMAKE_ICONV OFF)
 endif()
 
 # Build options
