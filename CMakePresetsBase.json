@@ -4,7 +4,14 @@
     {
       "name": "config-base",
       "hidden": true,
-      "binaryDir": "${sourceDir}/_bld-${presetName}"
+      "binaryDir": "${sourceDir}/_bld-${presetName}",
+      "cacheVariables": {
+        "BUILD_CLAR": "OFF",
+        "BUILD_SHARED_LIBS": "OFF",
+        "REGEX_BACKEND": "builtin",
+        "THREADSAFE": "ON",
+        "XP_NAMESPACE": "xpro"
+      }
     }
   ],
   "buildPresets": [
