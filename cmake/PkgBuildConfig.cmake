@@ -72,7 +72,7 @@ function(pkg_build_config)
     endif()
     file(APPEND "${PKGCONFIG_FILE}" "Cflags: -I\${includedir} ${PKGCONFIG_CFLAGS}\n")
 
-    if(XP_OPT_INSTALL)
+    if(CMAKE_OPT_INSTALL)
     # Install .pc file
     install(FILES "${PKGCONFIG_FILE}" DESTINATION "${CMAKE_INSTALL_LIBDIR}/pkgconfig")
     endif()
