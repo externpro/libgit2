@@ -34,25 +34,30 @@ INCLUDE(GNUInstallDirs)
 INCLUDE(IdeSplitSources)
 INCLUDE(FeatureSummary)
 INCLUDE(EnableWarnings)
-include(xpflags)
+
 set(targetsFile ${PROJECT_NAME}-targets)
-if(NOT DEFINED XP_INSTALL_CMAKEDIR)
-  set(XP_INSTALL_CMAKEDIR ${CMAKE_INSTALL_DATADIR}/cmake)
-endif()
 if(DEFINED XP_NAMESPACE)
-  set(XP_OPT_INSTALL FALSE)
-  set(nameSpace NAMESPACE ${XP_NAMESPACE}::)
-  set(USE_CMAKE_ICONV ON)
   string(JOIN "\n" EXT1
     "if(APPLE)"
     "  find_package(Iconv REQUIRED)"
     "endif()"
     ""
     )
-  xpPackageDevel(TARGETS_FILE ${targetsFile} DEPS libssh2 LIBRARIES ${XP_NAMESPACE}::git2)
+  xpExternPackage(NAMESPACE ${XP_NAMESPACE}
+    TARGETS_FILE ${targetsFile} LIBRARIES git2
+    BASE v${CMAKE_PROJECT_VERSION} XPDIFF "patch" DEPS libssh2
+    WEB "https://libgit2.github.com/" UPSTREAM "github.com/libgit2/libgit2"
+    DESC "portable, pure C implementation of the Git core methods"
+    LICENSE "[GPL-2.0 WITH le](https://github.com/libgit2/libgit2/blob/master/README.md#license 'GPL2 with linking exception')"
+		)
+  set(CMAKE_OPT_INSTALL FALSE)
+  set(USE_CMAKE_ICONV ON)
+  set(CMAKE_INSTALL_CMAKEDIR ${XP_INSTALL_CMAKEDIR})
+  set(nameSpace NAMESPACE ${XP_NAMESPACE}::)
 else()
-  set(XP_OPT_INSTALL TRUE)
+  set(CMAKE_OPT_INSTALL TRUE)
   set(USE_CMAKE_ICONV OFF)
+  set(CMAKE_INSTALL_CMAKEDIR ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME})
 endif()
 
 # Build options
