@@ -49,7 +49,7 @@ if(DEFINED XP_NAMESPACE)
     WEB "https://libgit2.github.com/" UPSTREAM "github.com/libgit2/libgit2"
     DESC "portable, pure C implementation of the Git core methods"
     LICENSE "[GPL-2.0 WITH le](https://github.com/libgit2/libgit2/blob/master/README.md#license 'GPL2 with linking exception')"
-		)
+    )
   set(CMAKE_OPT_INSTALL FALSE)
   set(USE_CMAKE_ICONV ON)
   set(CMAKE_INSTALL_CMAKEDIR ${XP_INSTALL_CMAKEDIR})
