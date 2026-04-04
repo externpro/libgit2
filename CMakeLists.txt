@@ -48,7 +48,7 @@ if(DEFINED XP_NAMESPACE)
     BASE v${CMAKE_PROJECT_VERSION} XPDIFF "patch" DEPS libssh2
     WEB "https://libgit2.github.com/" UPSTREAM "github.com/libgit2/libgit2"
     DESC "portable, pure C implementation of the Git core methods"
-    LICENSE "[GPL-2.0 WITH le](https://github.com/libgit2/libgit2/blob/master/README.md#license 'GPL2 with linking exception')"
+    LICENSE "[GPL-2.0-only WITH Libgit2-exception](https://github.com/libgit2/libgit2/blob/master/README.md#license 'GPLv2-only with libgit2 linking exception')"
     )
   set(CMAKE_OPT_INSTALL FALSE)
   set(USE_CMAKE_ICONV ON)
