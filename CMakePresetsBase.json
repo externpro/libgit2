@@ -10,7 +10,7 @@
         "BUILD_SHARED_LIBS": "OFF",
         "REGEX_BACKEND": "builtin",
         "THREADSAFE": "ON",
-        "XP_NAMESPACE": "xpro"
+        "CMAKE_EXPERIMENTAL_GENERATE_SBOM": "ca494ed3-b261-4205-a01f-603c95e4cae0"
       }
     }
   ],

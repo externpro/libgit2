@@ -11,9 +11,7 @@
 # Install:
 # > cmake --build . --target install
 
-CMAKE_MINIMUM_REQUIRED(VERSION 3.5.1...3.31)
-
-set(CMAKE_PROJECT_TOP_LEVEL_INCLUDES .devcontainer/cmake/xproinc.cmake)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.5.1...4.3)
 
 project(libgit2 VERSION "1.3.0" LANGUAGES C)
 
@@ -36,23 +34,12 @@ INCLUDE(FeatureSummary)
 INCLUDE(EnableWarnings)
 
 set(targetsFile ${PROJECT_NAME}-targets)
-if(DEFINED XP_NAMESPACE)
-  string(JOIN "\n" EXT1
-    "if(APPLE)"
-    "  find_package(Iconv REQUIRED)"
-    "endif()"
-    ""
-    )
-  xpExternPackage(NAMESPACE ${XP_NAMESPACE}
-    TARGETS_FILE ${targetsFile} LIBRARIES git2
-    BASE v${CMAKE_PROJECT_VERSION} XPDIFF "patch" DEPS libssh2
-    WEB "https://libgit2.github.com/" UPSTREAM "github.com/libgit2/libgit2"
-    DESC "portable, pure C implementation of the Git core methods"
-    LICENSE "[GPL-2.0-only WITH Libgit2-exception](https://github.com/libgit2/libgit2/blob/master/README.md#license 'GPLv2-only with libgit2 linking exception')"
-    )
+if(COMMAND xpExternPackage)
   set(CMAKE_OPT_INSTALL FALSE)
   set(USE_CMAKE_ICONV ON)
-  set(nameSpace NAMESPACE ${XP_NAMESPACE}::)
+  if(NOT DEFINED CMAKE_INSTALL_CMAKEDIR)
+    set(CMAKE_INSTALL_CMAKEDIR ${CMAKE_INSTALL_DATADIR}/cmake)
+  endif()
 else()
   set(CMAKE_OPT_INSTALL TRUE)
   set(USE_CMAKE_ICONV OFF)
@@ -335,6 +322,22 @@ IF(BUILD_FUZZERS)
 	ENDIF()
 	ADD_SUBDIRECTORY(fuzzers)
 ENDIF()
+
+if(COMMAND xpExternPackage)
+  string(JOIN "\n" EXT1
+    "if(APPLE)"
+    "  find_package(Iconv REQUIRED)"
+    "endif()"
+    ""
+    )
+  xpExternPackage(TARGETS_FILE ${targetsFile}
+    LIBRARIES git2 DEFAULT_TARGETS git2
+    BASE v${CMAKE_PROJECT_VERSION} XPDIFF "patch"
+    WEB "https://libgit2.github.com/" UPSTREAM "github.com/libgit2/libgit2"
+    DESC "portable, pure C implementation of the Git core methods"
+    LICENSE "[GPL-2.0-only WITH Libgit2-exception](https://github.com/libgit2/libgit2/blob/master/README.md#license 'GPLv2-only with libgit2 linking exception')"
+    )
+endif()
 
 FEATURE_SUMMARY(WHAT ENABLED_FEATURES DESCRIPTION "Enabled features:")
 FEATURE_SUMMARY(WHAT DISABLED_FEATURES DESCRIPTION "Disabled features:")
