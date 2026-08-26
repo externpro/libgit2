@@ -36,13 +36,11 @@ INCLUDE(EnableWarnings)
 set(targetsFile ${PROJECT_NAME}-targets)
 if(COMMAND xpExternPackage)
   set(CMAKE_OPT_INSTALL FALSE)
-  set(USE_CMAKE_ICONV ON)
   if(NOT DEFINED CMAKE_INSTALL_CMAKEDIR)
     set(CMAKE_INSTALL_CMAKEDIR ${CMAKE_INSTALL_DATADIR}/cmake)
   endif()
 else()
   set(CMAKE_OPT_INSTALL TRUE)
-  set(USE_CMAKE_ICONV OFF)
   set(CMAKE_INSTALL_CMAKEDIR ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME})
 endif()
 
@@ -324,12 +322,6 @@ IF(BUILD_FUZZERS)
 ENDIF()
 
 if(COMMAND xpExternPackage)
-  string(JOIN "\n" EXT1
-    "if(APPLE)"
-    "  find_package(Iconv REQUIRED)"
-    "endif()"
-    ""
-    )
   xpExternPackage(TARGETS_FILE ${targetsFile}
     LIBRARIES git2 DEFAULT_TARGETS git2
     BASE v${CMAKE_PROJECT_VERSION} XPDIFF "patch"

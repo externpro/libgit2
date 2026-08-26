@@ -282,13 +282,15 @@ INCLUDE(SelectGSSAPI)
 
 # Optional external dependency: iconv
 IF (USE_ICONV)
-	if(USE_CMAKE_ICONV)
+	if(USE_LIBICONV)
 		list(REMOVE_ITEM CMAKE_MODULE_PATH "${libgit2_SOURCE_DIR}/cmake/")
-		find_package(Iconv)
+		# libiconv::libiconv avoids hard-coded build system paths in targetsFile
+		find_package(libiconv)
 		list(APPEND CMAKE_MODULE_PATH "${libgit2_SOURCE_DIR}/cmake/")
-		include(FindIconv) # populate the ICONV_* variables
-		# Iconv_INCLUDE_DIR (cmake) and ICONV_INCLUDE_DIR (libgit2)
-		# are assumed to be the same below... it was true on my system
+		if(libiconv_FOUND)
+			set(ICONV_FOUND ${libiconv_FOUND})
+			set(ICONV_LIBRARIES ${LIBICONV_LIBRARIES})
+		endif()
 	else()
 	FIND_PACKAGE(Iconv)
 	endif()
@@ -296,12 +298,7 @@ ENDIF()
 IF (ICONV_FOUND)
 	SET(GIT_USE_ICONV 1)
 	LIST(APPEND LIBGIT2_SYSTEM_INCLUDES ${ICONV_INCLUDE_DIR})
-	if(USE_CMAKE_ICONV AND TARGET Iconv::Iconv)
-		# Iconv::Iconv avoids hard-coded build system paths in targetsFile
-		list(APPEND LIBGIT2_LIBS Iconv::Iconv)
-	else()
 	LIST(APPEND LIBGIT2_LIBS ${ICONV_LIBRARIES})
-	endif()
 	LIST(APPEND LIBGIT2_PC_LIBS ${ICONV_LIBRARIES})
 ENDIF()
 ADD_FEATURE_INFO(iconv GIT_USE_ICONV "iconv encoding conversion support")
